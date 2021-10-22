@@ -15,6 +15,9 @@ werkzeug = "*"
 ipython = "*"
 markdown = "*"
 django-filter = "*"
+pytest-factoryboy = "*"
+pytest-xdist = "*"
+pillow = "*"
 
 [dev-packages]
 
