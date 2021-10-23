@@ -7,19 +7,28 @@ from django.utils.translation import gettext_lazy as _
 # Create custom user manager
 class CustomUserManager(BaseUserManager):
 
-    def create_user(self, email, password=None):
+    def _create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError("User must have an email address")
         email = self.normalize_email(email)
-        
-        user = self.model(email=email)
+
+        user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self.db)
 
         return user
 
+    def create_user(self, email, password=None):
+        user = self._create_user(email, password)
+        user.is_admin = False
+        user.is_superuser = False
+        user.is_staff = False
+        user.save(using=self.db)
+
+        return user
+
     def create_superuser(self, email, password=None):
-        user = self.create_user(email, password)
+        user = self._create_user(email, password)
 
         user.is_admin = True
         user.is_staff = True
