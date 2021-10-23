@@ -4,15 +4,6 @@ from users.api.serializers import UserRegisterSerializer
 
 pytestmark = pytest.mark.django_db
 
-# Fixtures
-
-@pytest.fixture
-def validated_user_data():
-    return {
-        "email": "testmail@gmail.com",
-        "password": "testpass1234"
-    }
-
 
 # Tests
 
