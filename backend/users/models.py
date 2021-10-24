@@ -40,7 +40,11 @@ class CustomUserManager(BaseUserManager):
 
 # Create custom user
 class User(AbstractBaseUser):
-    email = models.EmailField(_("Email"), max_length=255, unique=True)
+    email = models.EmailField(_("Email"), max_length=255, unique=True, blank=False, null=False)
+    full_name = models.CharField(_("Full Name"), max_length=50, blank=True, null=True)
+    bio = models.CharField(_("Bio"), max_length=230, blank=True, null=True)
+    age = models.PositiveIntegerField(_("Age"), blank=True, null=True)
+    avatar = models.ImageField(upload_to="users/avatar/", blank=True, null=True)
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
