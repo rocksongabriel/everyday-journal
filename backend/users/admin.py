@@ -48,7 +48,7 @@ class UserChangeForm(forms.ModelForm):
 
 
 class UserAdmin(BaseUserAdmin):
-    list_display = ['email', 'full_name', 'is_admin', 'is_superuser', 'is_staff']
+    list_display = ['email', 'user_id', 'full_name', 'is_admin', 'is_superuser', 'is_staff']
     list_filter = ('is_admin', 'age',)
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
