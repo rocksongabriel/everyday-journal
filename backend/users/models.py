@@ -7,32 +7,27 @@ from django.utils.translation import gettext_lazy as _
 # Create custom user manager
 class CustomUserManager(BaseUserManager):
 
-    def _create_user(self, email, password=None, **extra_fields):
+    def _create_user(self, email, password=None):
         if not email:
             raise ValueError("User must have an email address")
         email = self.normalize_email(email)
 
-        user = self.model(email=email, **extra_fields)
+        user = self.model(email=email)
         user.set_password(password)
         user.save(using=self.db)
 
         return user
 
     def create_user(self, email, password=None):
-        user = self._create_user(email, password)
-        user.is_admin = False
-        user.is_superuser = False
-        user.is_staff = False
+        user = self._create_user(email=email, password=password)
         user.save(using=self.db)
 
         return user
 
     def create_superuser(self, email, password=None):
-        user = self._create_user(email, password)
+        user = self._create_user(email=email, password=password)
 
         user.is_admin = True
-        user.is_staff = True
-        user.is_superuser = True
         user.save(using=self.db)
 
         return user
@@ -45,7 +40,7 @@ class User(AbstractBaseUser):
     bio = models.CharField(_("Bio"), max_length=230, blank=True, null=True)
     age = models.PositiveIntegerField(_("Age"), blank=True, null=True)
     avatar = models.ImageField(upload_to="users/avatar/", blank=True, null=True)
-    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
