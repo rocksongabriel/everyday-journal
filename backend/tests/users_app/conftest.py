@@ -16,6 +16,14 @@ def validated_user_data():
     }
 
 @pytest.fixture
+def validated_data():
+    return {
+        "full_name": "Test User",
+        "age": 19,
+        "bio": "Very powerful journaler"
+    }
+
+@pytest.fixture
 def invalid_user_data_no_password():
     return {
         "email": "testmail@gmail.com"
