@@ -18,6 +18,7 @@ django-filter = "*"
 pytest-factoryboy = "*"
 pytest-xdist = "*"
 pillow = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 
