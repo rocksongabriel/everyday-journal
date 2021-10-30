@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -22,7 +23,8 @@ class UserRegisterAPIView(APIView):
 
 
 class UserUpdateAPIView(APIView):
-
+    permission_classes = [IsAuthenticated]
+    
     def put(self, request, user_id):
         user = User.objects.get(user_id=user_id)
         serializer = UserUpdateSerializer(instance=user, data=request.data)
@@ -33,6 +35,7 @@ class UserUpdateAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserRetrieveAPIView(APIView):
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, user_id):
         user = User.objects.get(user_id=user_id)
