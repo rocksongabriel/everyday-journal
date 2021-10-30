@@ -39,14 +39,25 @@ class TestUserUpdateAPIView:
             kwargs={"user_id":response1.data["user_id"]}
         )
 
-        response2 = api_client.put(
+        obtain_token_url = reverse(
+            "ep-token-obtain-pair",
+        )
+        response2 = api_client.post(
+            obtain_token_url,
+            validated_user_data,
+            format="json"
+        )
+        
+        access_token = response2.data["access"]
+        api_client.credentials(HTTP_AUTHORIZATION=f"Bearer {access_token}")
+        response3 = api_client.put(
             update_user_url,
             validated_data,
             format="json"
         )
 
-        assert response2.status_code == 200
-        assert response2.data["full_name"]
+        assert response3.status_code == 200
+        assert response3.data["full_name"]
 
     def test_user_update_invalid(self, api_client, validated_user_data, invalid_data):
         create_user_url = reverse("ep-register-user")
@@ -60,13 +71,25 @@ class TestUserUpdateAPIView:
             kwargs={"user_id":response1.data["user_id"]}
         )
 
-        response2 = api_client.put(
+
+        obtain_token_url = reverse(
+            "ep-token-obtain-pair",
+        )
+        response2 = api_client.post(
+            obtain_token_url,
+            validated_user_data,
+            format="json"
+        )
+        
+        access_token = response2.data["access"]
+        api_client.credentials(HTTP_AUTHORIZATION=f"Bearer {access_token}")
+        response3 = api_client.put(
             update_user_url,
             invalid_data,
             format="json"
         )
 
-        assert response2.status_code == 400
+        assert response3.status_code == 400
 
 class TestUserRetrieveAPIView:
 
@@ -81,7 +104,19 @@ class TestUserRetrieveAPIView:
             "ep-retrieve-user",
             kwargs={"user_id": response1.data["user_id"]}
         )
-        response2 = api_client.get(retrieve_user_url)
 
-        assert response2.status_code == 200
-        assert response2.data["email"]
+        obtain_token_url = reverse(
+            "ep-token-obtain-pair",
+        )
+        response2 = api_client.post(
+            obtain_token_url,
+            validated_user_data,
+            format="json"
+        )
+
+        access_token = response2.data["access"]
+        api_client.credentials(HTTP_AUTHORIZATION=f"Bearer {access_token}")
+        response3 = api_client.get(retrieve_user_url)
+
+        assert response3.status_code == 200
+        assert response3.data["email"]
